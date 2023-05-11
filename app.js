@@ -5,13 +5,12 @@ let prisma = new PrismaClient();
 let request = require('request-promise');
 let jwt = require('jsonwebtoken');
 let cookieParser = require('cookie-parser');
-let hbs = require('express-handlebars').create({extname: '.hbs'});
 let bodyParser = require('body-parser');
 const path = require("path");
 const fs = require("fs");
-const {accessKey, refreshKey} = require('./security/jwtKeys');
+/*const {accessKey, refreshKey} = require('./security/jwtKeys');
 const {Admin, Guest, User, Manager, Courier} = require('./security/roles');
-const {GetAbilityFor} = require('./security/privilegies');
+const {GetAbilityFor} = require('./security/privilegies');*/
 
 module.exports = { prisma };
 let app = express();
@@ -19,9 +18,6 @@ let PORT = 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser("cookie_key"));
-app.engine('.hbs', hbs.engine);
-app.set('view engine', '.hbs');
-app.set('views', path.resolve(__dirname, 'views'));
 
 let userRoute = require('./routes/userRoute')();
 let typeRoute = require('./routes/typeRoute')();
