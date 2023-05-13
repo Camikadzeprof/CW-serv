@@ -1,15 +1,15 @@
 let express = require('express');
+let passport = require('passport');
 let menuController = require('../controllers/menuController');
 
 module.exports = () => {
     let router = express.Router();
 
-    router.get('/', menuController.getAll);
-    router.get('/type/:tp', menuController.getByType);
-    router.get('/:mn', menuController.getOne);
-    router.post('/', menuController.addItem);
-    router.put('/', menuController.updateItem);
-    router.delete('/:mn', menuController.deleteItem);
+    router.get('/menu/:typeId', passport.authenticate('jwt', {session: false}), menuController.getMenuByTypeId);
+    router.get('/menu/:menuId', passport.authenticate('jwt', {session: false}), menuController.getMenuByMenuId);
+    router.post('/menu', passport.authenticate('jwt', {session: false}), menuController.createMenuForTypeId);
+    router.put('/menu/:menuId', passport.authenticate('jwt', {session: false}), menuController.editMenuByMenuId);
+    router.delete('/menu/:menuId', passport.authenticate('jwt', {session: false}), menuController.deleteMenuByMenuId);
 
     return router;
 }

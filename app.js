@@ -1,3 +1,4 @@
+require('dotenv').config();
 let https = require('https');
 let express = require('express');
 let { PrismaClient } = require('@prisma/client');
