@@ -1,6 +1,7 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 let OrderItem = require('./orderItem.model');
+let Cart = require('./cart.model');
 
 const menuSchema = new Schema({
     name: {
@@ -31,6 +32,9 @@ const menuSchema = new Schema({
 
 menuSchema.pre('remove', async function (next) {
     await OrderItem.remove({food: {
+            $in: this._id
+        }});
+    await Cart.remove({food: {
             $in: this._id
         }});
     next();

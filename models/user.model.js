@@ -2,6 +2,7 @@ let mongoose = require('mongoose');
 let bcrypt = require('bcrypt');
 let Schema = mongoose.Schema;
 let Order = require('./order.model')
+let Cart = require('./cart.model');
 
 const userSchema = new Schema({
     username: {
@@ -37,6 +38,9 @@ userSchema.pre('save', async function (next) {
 })
 userSchema.pre('remove', async function (next) {
     await Order.remove({createBy: {
+            $in: this._id
+        }});
+    await Cart.remove({user: {
             $in: this._id
         }});
     next();
