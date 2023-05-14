@@ -1,56 +1,95 @@
 require('dotenv').config();
-let https = require('https');
 let express = require('express');
-let { PrismaClient } = require('@prisma/client');
-let prisma = new PrismaClient();
-let request = require('request-promise');
-let jwt = require('jsonwebtoken');
-let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
-const path = require("path");
-const fs = require("fs");
-/*const {accessKey, refreshKey} = require('./security/jwtKeys');
-const {Admin, Guest, User, Manager, Courier} = require('./security/roles');
-const {GetAbilityFor} = require('./security/privilegies');*/
-
-module.exports = { prisma };
+let cors = require('cors')
+let authRouter = require('./routes/authRoute');
+let menuRouter = require('./routes/menuRoute');
+let orderItemRouter = require('./routes/orderItemRoute');
+let orderRouter = require('./routes/orderRoute');
+let typeRouter = require('./routes/typeRoute');
+let userRouter = require('./routes/userRoute');
 let app = express();
-let PORT = 3000;
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(cookieParser("cookie_key"));
+let passport = require('passport');
+let mongoose = require('mongoose');
+let initializePassport = require('./config/passport-config');
+let fs = require('fs');
+let https = require('https');
 
-let userRoute = require('./routes/userRoute')();
-let typeRoute = require('./routes/typeRoute')();
-let menuRoute = require('./routes/menuRoute')();
-let orderRoute = require('./routes/orderRoute')();
-let orderedFoodRoute = require('./routes/orderedFoodRoute')();
-const sequelize = require('./models/seq').sequelize;
-
-sequelize.authenticate()
-    .then(() => {
-        console.log('Соединение с базой данных установлено');
-    })
-    .catch(err => {
-        console.log('Ошибка при соединении с базой данных', err.message);
-    });
-
-app.use('/users', userRoute);
-app.use('/types', typeRoute);
-app.use('/menu', menuRoute);
-app.use('/orders', orderRoute);
-app.use('/orderedFood', orderedFoodRoute);
-
-let options = {
-    key: fs.readFileSync("./security/RS-KURS-GAA.key"),
-    cert: fs.readFileSync("./security/RS-KURS-GAA.crt")
+const options = {
+    cert: fs.readFileSync('./config/RS-GAA-CRT.crt'),
+    key: fs.readFileSync('./config/RS-KURS-GAA.key')
 }
 
-https
-    .createServer(options, app)
-    .listen(PORT, () => {
-        console.log(`https://localhost:${PORT}`);
+let server = require('https').createServer(options,app);
+let io = require('socket.io')(server);
+
+mongoose.connect('mongodb://localhost:27017/CW', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(r => {
+    console.log('Connected to MongoDB');
+}).catch(e => {
+    console.log(e.message);
+})
+
+initializePassport(passport);
+app.use(passport.initialize());
+
+app.use(cors());
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 }));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+let messages = [];
+let users = [];
+io.on('connection', socket => {
+    socket.on('JOIN', ({username}) => {
+
+        if (users.some(user => user.username === username)){
+            users = users.filter(user => user.username !== username);
+        }
+        users.push({userID: socket.id, username: username});
+        socket.broadcast.emit("SET_USERS", users);
+        socket.emit("SOCKET_DATA", {
+            users: users,
+            messages: messages
+        })
+        socket.broadcast.emit("SOCKET_DATA", {
+            users: users,
+            messages: messages
+        })
     })
-    .on("error", (e) => {
-        console.log(`Error: ${e.code}`);
-    });
+    socket.on("NEW_MESSAGE", ({username, message}) => {
+        const obj = {
+            username,
+            message
+        };
+        messages.push(obj);
+        socket.broadcast.emit("NEW_MESSAGE", obj);
+        socket.emit("SOCKET_DATA", {
+            users: users,
+            messages: messages
+        })
+        socket.broadcast.emit("SOCKET_DATA", {
+            users: users,
+            messages: messages
+        })
+    })
+    socket.on("USER_DISCONNECTED", username => {
+        users = users.filter(user => user.username !== username);
+        console.log("socket data emit broadcast")
+        socket.broadcast.emit("SOCKET_DATA", {
+            users: users,
+            messages: messages
+        })
+    })
+})
+
+app.use(authRouter);
+app.use(menuRouter);
+app.use(orderItemRouter);
+app.use(orderRouter);
+app.use(typeRouter);
+app.use(userRouter);
+
+server.listen(process.env.PORT || 5000);
