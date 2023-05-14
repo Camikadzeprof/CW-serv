@@ -7,6 +7,7 @@ let menuRouter = require('./routes/menuRoute');
 let orderItemRouter = require('./routes/orderItemRoute');
 let orderRouter = require('./routes/orderRoute');
 let typeRouter = require('./routes/typeRoute');
+let cartRouter = require('./routes/cartRoute');
 let userRouter = require('./routes/userRoute');
 let app = express();
 let passport = require('passport');
@@ -90,6 +91,7 @@ app.use(menuRouter);
 app.use(orderItemRouter);
 app.use(orderRouter);
 app.use(typeRouter);
+add.use(cartRouter);
 app.use(userRouter);
 
 server.listen(process.env.PORT || 5000);
