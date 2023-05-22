@@ -1,4 +1,5 @@
 const Menu = require('../../models/menu.model');
+const Type = require('../../models/type.model');
 
 module.exports = async (req, res) => {
     const {menuId} = req.params;

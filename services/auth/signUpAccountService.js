@@ -17,4 +17,5 @@ module.exports = async (req, res) => {
     user.save()
         .then(() => res.json({message: 'Sign up success'}))
         .catch(e => res.json({message: e.message}));
+    
 }

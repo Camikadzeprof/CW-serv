@@ -1,9 +1,13 @@
 let Menu = require('../../models/menu.model');
+let Type = require('../../models/type.model');
 
 module.exports = async (req, res) => {
-    const {typeId} = req.params;
+    let {typeId} = req.params;
+    let type = await Type.findOne({name: typeId});
+    typeId = type.name;
     const menu = await Menu.find({
-        type: typeId
-    })
+        type: type.id
+    });
+    menu.type = typeId;
     res.json(menu);
 }

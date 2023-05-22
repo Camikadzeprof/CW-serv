@@ -8,10 +8,6 @@ const orderSchema = new Schema({
         type: Schema.Types.Number,
         required: true
     },
-    payment: {
-        type: Schema.Types.Number,
-        required: true
-    },
     paid: {
         type: Schema.Types.Boolean,
         required: true
@@ -23,6 +19,12 @@ const orderSchema = new Schema({
     status: {
         type: String,
         required: true
+    },
+    courier: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: false,
+        autopopulate: true
     },
     createBy: {
         type: Schema.Types.ObjectId,

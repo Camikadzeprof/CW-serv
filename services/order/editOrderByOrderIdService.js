@@ -2,12 +2,14 @@ let Order = require('../../models/order.model');
 
 module.exports = async (req, res) => {
     const {orderId} = req.params;
-    const {amount, paid, status} = req.body;
+    let {paid, address, status, courier} = req.body;
+    paid = Boolean(paid);
     await Order.updateOne({_id: orderId}, {
         $set: {
-            amount,
             paid,
-            status
+            address,
+            status,
+            courier
         }
     })
         .then(() => res.json({message: 'Order updated successfully'}))

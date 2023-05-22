@@ -2,6 +2,7 @@ require('dotenv').config();
 let express = require('express');
 let bodyParser = require('body-parser');
 let cors = require('cors')
+let apiRouter = require('./routes/apiRoute');
 let authRouter = require('./routes/authRoute');
 let menuRouter = require('./routes/menuRoute');
 let orderItemRouter = require('./routes/orderItemRoute');
@@ -14,17 +15,17 @@ let passport = require('passport');
 let mongoose = require('mongoose');
 let initializePassport = require('./config/passport-config');
 let fs = require('fs');
-let https = require('https');
+let ip = require('ip');
 
 const options = {
     cert: fs.readFileSync('./config/RS-GAA-CRT.crt'),
     key: fs.readFileSync('./config/RS-KURS-GAA.key')
 }
 
-let server = require('https').createServer(options,app);
+let server = require('https').createServer(options, app);
 let io = require('socket.io')(server);
 
-mongoose.connect('mongodb://localhost:27017/CW', {
+mongoose.connect('mongodb://localhost:27017/CourseWork', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(r => {
@@ -86,12 +87,14 @@ io.on('connection', socket => {
     })
 })
 
+app.use(apiRouter);
 app.use(authRouter);
 app.use(menuRouter);
 app.use(orderItemRouter);
 app.use(orderRouter);
 app.use(typeRouter);
-add.use(cartRouter);
+app.use(cartRouter);
 app.use(userRouter);
 
-server.listen(process.env.PORT || 5000);
+server.listen(3000, ()=> {
+    console.log('Express server started on port: ' + server.address().port+`\n`)});

@@ -9,7 +9,7 @@ const initializePassport = (passport) => {
     opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
     opts.secretOrKey = 'secret';
     const authenticateUser = async (username, password, done) => {
-        const user = await User.findFirst({where: { username: username }});
+        const user = await User.findOne({username: username});
         if (!user) {
             return done(null, false, {message: 'Incorrect username'});
         }

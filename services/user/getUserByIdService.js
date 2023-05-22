@@ -4,10 +4,11 @@ module.exports = async (req, res) => {
     const {id} = req.params;
     const user = await User.findById(id);
     if (user !== null) {
-        const {email, phone} = user;
+        const {email, phone, role} = user;
         const data = {
             email,
-            phone
+            phone,
+            role
         }
         return res.json(data);
     } else {
