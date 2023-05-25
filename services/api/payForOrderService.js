@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
                 status: 'Принят'
             }
         })
-        res.status(200).json({ status: payment.status })
+        res.status(200).json({ status: 'Успешно' });
     } catch (e) {
         res.status(400).send(e.message)
     }

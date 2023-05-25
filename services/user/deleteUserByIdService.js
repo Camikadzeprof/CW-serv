@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
 
     try {
         await User.deleteOne({_id: id}).then(result => {
-            res.json({message: `User was deleted successfully, deleted count: ${result.deletedCount}`});
+            res.json({message: `Пользователь удален успешно`});
         })
     } catch (e) {
         res.json({message: e.message});

@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
     try {
         await Menu.findById(menuId, (err, menu) => {
             menu.remove();
-            res.json({message: `Menu item was deleted successfully`});
+            res.json({message: `Блюдо удалено из меню`});
         });
     } catch (e) {
         res.json({message: e.message});

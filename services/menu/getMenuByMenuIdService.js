@@ -6,6 +6,6 @@ module.exports = async (req, res) => {
     if (menu !== null) {
         res.json(menu);
     } else {
-        res.json({message: `The menu item doesn't exist`});
+        res.json({message: `Указанного блюда не существует`});
     }
 }

@@ -11,6 +11,6 @@ module.exports = async (req, res) => {
             price
         }
     })
-        .then(() => res.json({message: 'Menu item updated successfully'}))
+        .then(() => res.json({message: 'Блюдо изменено успешно'}))
         .catch(err => res.json({message: err.message}));
 }

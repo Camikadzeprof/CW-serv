@@ -5,14 +5,16 @@ module.exports = async (req, res) => {
         name: req.body.name
     })
     if (typeExists !== null) {
-        return res.status(409).json({ message: 'This type already exists' });
+        res.status(409).json({ message: 'Такой тип блюд уже существует' });
     }
-    const type = new Type({
-        name: req.body.name,
-        createBy: req.body.userId
-    })
-    type.save().catch(e => {
-        res.json({ message: e.message });
-    })
-    res.json({ message: 'Type was created successfully' });
+    else {
+        const type = new Type({
+            name: req.body.name,
+            createBy: req.body.userId
+        })
+        type.save().catch(e => {
+            res.json({message: e.message});
+        })
+        res.json({message: 'Тип успешно добавлен'});
+    }
 }

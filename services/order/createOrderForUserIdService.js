@@ -12,6 +12,6 @@ module.exports = async (req, res) => {
         createBy
     })
     await order.save()
-        .then((data) => { res.json({ message: 'Order was created successfully', orderId: data })})
+        .then((data) => { res.json({ message: 'Ваш заказ принят к обработке', orderId: data })})
         .catch(e => res.json({ message: e.message }));
 }

@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
     try {
         await OrderItem.findById(orderItemId, (err, orderItem) => {
             orderItem.remove();
-            res.json({message: `Order item was deleted successfully`});
+            res.json({message: `Элемент заказа удален успешно`});
         });
     } catch (e) {
         res.json({message: e.message});

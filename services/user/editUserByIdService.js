@@ -10,6 +10,6 @@ module.exports = async (req, res) => {
             phone
         }
     })
-        .then(() => res.json({message: 'User updated successfully'}))
+        .then(() => res.json({message: 'Информация о пользователе обновлена'}))
         .catch(e => res.json({message: e.message}))
 }

@@ -6,6 +6,6 @@ module.exports = async (req, res) => {
     if (order !== null) {
         res.json(order);
     } else {
-        res.json({message: `The order doesn't exist`});
+        res.json({message: `Данного заказа не существует`});
     }
 }

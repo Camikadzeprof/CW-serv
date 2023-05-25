@@ -6,14 +6,20 @@ module.exports = async (req, res) => {
     price = Number(price);
     type = await Type.findOne({name: type});
     type = type._id;
-    const menu = new Menu({
-        name,
-        type,
-        img,
-        description,
-        price
-    })
-    await menu.save()
-        .then(() => res.json({ message: 'Menu item was created successfully' }))
-        .catch(e => res.json({ message: e.message }));
+    const menuExists = await Menu.findOne({name: name, type: type});
+    if (menuExists != null) {
+        res.status(409).json({message: 'Такое блюдо уже существует'});
+    }
+    else {
+        const menu = new Menu({
+            name,
+            type,
+            img,
+            description,
+            price
+        })
+        await menu.save()
+            .then(() => res.json({message: 'Блюдо добавлено в меню'}))
+            .catch(e => res.json({message: e.message}));
+    }
 }

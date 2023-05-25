@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
         }
         return res.json(data);
     } else {
-        return res.json({message: 'This user does not exist'});
+        return res.json({message: 'Указанного пользователя не существует'});
     }
 
 }

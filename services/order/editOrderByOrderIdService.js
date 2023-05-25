@@ -12,6 +12,6 @@ module.exports = async (req, res) => {
             courier
         }
     })
-        .then(() => res.json({message: 'Order updated successfully'}))
+        .then(() => res.json({message: 'Заказ обновлен'}))
         .catch(err => res.json({message: err.message}));
 }

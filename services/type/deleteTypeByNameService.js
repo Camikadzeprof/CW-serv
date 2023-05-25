@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
     try {
         await Type.findOne({name: typeName}, (err, type) => {
             type.remove();
-            res.json({message: `Type was deleted successfully`});
+            res.json({message: `Тип удален успешно`});
         });
     } catch (e) {
         res.json({message: e.message});

@@ -5,17 +5,18 @@ module.exports = async (req, res) => {
         username: req.body.username
     })
     if (userExists !== null) {
-        return res.status(409).json({ message: 'This user already exists' });
+        res.status(409).json({ message: 'Пользователь с указанным именем уже существует' });
     }
-    const user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        phone: req.body.phone,
-        password: req.body.password,
-        role: 'user'
-    })
-    user.save()
-        .then(() => res.json({message: 'Sign up success'}))
-        .catch(e => res.json({message: e.message}));
-    
+    else {
+        const user = new User({
+            username: req.body.username,
+            email: req.body.email,
+            phone: req.body.phone,
+            password: req.body.password,
+            role: 'user'
+        })
+        user.save()
+            .then(() => res.json({message: 'Регистрация прошла успешно'}))
+            .catch(e => res.json({message: e.message}));
+    }
 }

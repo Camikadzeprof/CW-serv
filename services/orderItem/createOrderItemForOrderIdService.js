@@ -13,6 +13,6 @@ module.exports = async (req, res) => {
         order
     })
     await orderItem.save()
-        .then(() => res.json({ message: 'Order item was created successfully' }))
+        .then(() => res.json({ message: 'Элемент заказа добавлен' }))
         .catch(e => res.json({ message: e.message }));
 }
