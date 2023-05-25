@@ -14,6 +14,6 @@ module.exports = async (req, res) => {
         user
     })
     await cart.save()
-        .then(() => res.json({ message: 'Cart item was created successfully' }))
+        .then(() => res.json({ message: 'Блюдо добавлено в корзину' }))
         .catch(e => res.json({ message: e.message }));
 }

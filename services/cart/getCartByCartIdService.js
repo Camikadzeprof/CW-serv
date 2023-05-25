@@ -7,6 +7,6 @@ module.exports = async (req, res) => {
         res.json(cart);
     } else {
         res.statusCode = 404;
-        res.json({message: `The cart item doesn't exist`});
+        res.json({message: `Данного блюда нет в корзине`});
     }
 }

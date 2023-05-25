@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
     try {
         await Cart.findById(cartId, (err, cart) => {
             cart.remove();
-            res.json({message: `Cart item was deleted successfully`});
+            res.json({message: `Блюдо убрано из корзины`});
         });
     } catch (e) {
         res.json({message: e.message});

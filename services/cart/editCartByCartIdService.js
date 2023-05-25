@@ -14,6 +14,6 @@ module.exports = async (req, res) => {
             quantity
         }
     })
-        .then(() => res.json({message: 'Cart item updated successfully'}))
+        .then(() => res.json({message: 'Информация о товаре в корзине обновлена'}))
         .catch(err => res.json({message: err.message}));
 }
