@@ -37,12 +37,8 @@ userSchema.pre('save', async function (next) {
     next();
 })
 userSchema.pre('remove', async function (next) {
-    await Order.remove({createBy: {
-            $in: this._id
-        }});
-    await Cart.remove({user: {
-            $in: this._id
-        }});
+    await Order.deleteMany({createdBy: this._id});
+    await Cart.deleteMany({user: this._id});
     next();
 })
 

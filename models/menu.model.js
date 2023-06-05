@@ -31,12 +31,8 @@ const menuSchema = new Schema({
     })
 
 menuSchema.pre('remove', async function (next) {
-    await OrderItem.remove({food: {
-            $in: this._id
-        }});
-    await Cart.remove({food: {
-            $in: this._id
-        }});
+    await OrderItem.deleteMany({food: this._id});
+    await Cart.deleteMany({food: this._id});
     next();
 })
 

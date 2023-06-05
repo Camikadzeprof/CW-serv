@@ -38,9 +38,7 @@ const orderSchema = new Schema({
     })
 
 orderSchema.pre('remove', async function (next) {
-    await OrderItem.remove({order: {
-            $in: this._id
-        }});
+    await OrderItem.deleteMany({order: this._id});
     next();
 })
 

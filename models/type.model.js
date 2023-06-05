@@ -13,9 +13,7 @@ const typeSchema = new Schema({
     })
 
 typeSchema.pre('remove', async function (next) {
-    await Menu.remove({type: {
-            $in: this._id
-        }});
+    await Menu.deleteMany({type: this._id});
     next();
 })
 
