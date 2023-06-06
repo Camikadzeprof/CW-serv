@@ -11,14 +11,14 @@ const initializePassport = (passport) => {
     const authenticateUser = async (username, password, done) => {
         const user = await User.findOne({username: username});
         if (!user) {
-            return done(null, false, {message: 'Incorrect username'});
+            return done(null, false, {message: 'Неверный логин'});
         }
         const result = await bcrypt.compare(password, user.password);
         if (result) {
             return done(null, {id: user.id, username: user.username, role: user.role});
         }
         else {
-            return done(null, false, {message: 'Incorrect password'});
+            return done(null, false, {message: 'Неверный пароль'});
         }
     }
     passport.use(new JwtStrategy(opts, async function (jwt_payload, done) {
