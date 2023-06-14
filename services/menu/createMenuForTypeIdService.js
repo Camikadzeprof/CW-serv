@@ -11,13 +11,7 @@ module.exports = async (req, res) => {
         if (menuExists != null) {
             res.status(409).json({message: 'Такое блюдо уже существует'});
         } else {
-            const menu = new Menu({
-                name,
-                type,
-                img,
-                description,
-                price
-            })
+            const menu = new Menu({name, type, img, description, price})
             await menu.save()
                 .then(() => res.json({message: 'Блюдо добавлено в меню'}))
                 .catch(e => res.json({message: e.message}));

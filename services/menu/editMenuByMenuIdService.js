@@ -8,27 +8,14 @@ module.exports = async (req, res) => {
     if (menu.name !== name) {
         menu = await Menu.findOne({name: name});
         if (!menu) {
-            await Menu.updateOne({_id: menuId}, {
-                $set: {
-                    name,
-                    img,
-                    description,
-                    price
-                }
-            })
+            await Menu.updateOne({_id: menuId}, {$set: {name, img, description, price}})
                 .then(() => res.json({message: 'Блюдо изменено успешно'}))
                 .catch(err => res.json({message: err.message}));
         }
         else res.status(409).json({message: 'Блюдо с таким названием уже существует'});
     }
     else {
-        await Menu.updateOne({_id: menuId}, {
-            $set: {
-                img,
-                description,
-                price
-            }
-        })
+        await Menu.updateOne({_id: menuId}, {$set: {img, description, price}})
             .then(() => res.json({message: 'Блюдо изменено успешно'}))
             .catch(err => res.json({message: err.message}));
     }
